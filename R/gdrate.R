@@ -208,7 +208,7 @@ gdrate <- function(input, pval, plots) {
     # observed values
     graphics::points(f ~ time, data = jdta, pch = 21, col = c("black"), bg = "red", lwd = 1.2,
                      cex = 1.5)
-    # return(rmse)
+     return(rmse)
   }
   
   # Function to compare models and return selected fit with estimates or not fit
