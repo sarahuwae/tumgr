@@ -447,27 +447,19 @@ gdrate <- function(input, pval, plots) {
     foo$pvar <- c("NA", "NA", "NA", "p")
     return(foo)
   }
-   
-# Function to return result list
+  
+  # Function to return result list
   generateresults <- function() {
     
     # Function to generate outlist1 for gdrateAUG16 fx return
-    genoutlist <- function(xx, pEst) {
+    genoutlist <- function(xx) {
       y <- data.frame(stats::aggregate(xx$name ~ xx$calcfinal, data = xx, length))
       colnames(y) <- c("Type", "N")
       y$Percentage <- round((y$N/sum(y$N)), digits = 2) * 100
       y$Group <- ifelse((y$Type %in% paste(foo$fit)), "included", "excluded")
       olt <- c(paste(foo$fit), "not fit")
       y$Analyzed <- ifelse((y$Type %in% olt), "yes", "no")
-      
-      # Add AIC value
-      if (!is.null(pEst)) {
-        y$AIC <- ave(pEst$AIC, pEst$name, FUN = function(x) if (length(x) > 0) min(x) else NA)
-      } else {
-        y$AIC <- NA
-      }
-      
-      y <- y[, c(5, 1:4)]
+      y <- y[, c(4, 5, 1:3)]
       y <- data.frame(y[order(y$Group), ])
       rownames(y) <- NULL
       return(y)
@@ -480,12 +472,12 @@ gdrate <- function(input, pval, plots) {
     if (ip$cont == 0) {
       resultsexc1only <- function() {
         ol <- data.frame(ip$excluded)
-        outlist1 <- genoutlist(ol, NULL)  # Pass NULL for pEst since it's not available
+        outlist1 <- genoutlist(ol)
         ol2 <- ol[, c("name", "numcyc", "calcfinal")]
         colnames(ol2)[2:3] <- c("N", "selectedFit")
         OutputData <- cbind(ol2, g = NaN, d = NaN, phi = NaN)
         noa <- "no analyzable cases in input data"
-        result <- list(allest = noa, results = OutputData, models = outlist1, sumstats = noa)
+        result <- list(allest = noa, results = OutputData, models = outlist1,sumstats = noa)
         return(result)
       }
       
@@ -565,7 +557,7 @@ gdrate <- function(input, pval, plots) {
         all2 <- data.frame(combos$all2)
         
         # summary by fit/exclusion reason
-        outlist1 <- genoutlist(all2, pEst)
+        outlist1 <- genoutlist(all2)
         
         # plots and output estimates where analyzed cases by inc exc status
         if (inc1 > 0) {
@@ -652,4 +644,4 @@ gdrate <- function(input, pval, plots) {
   foo <- initf()
   result <- generateresults()
   return(result)
-  
+}
