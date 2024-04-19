@@ -14,7 +14,7 @@ gdrate <- function(input, pval, plots) {
     try({
       outgd <- nlsLM(eval(parse(text = paste(v$model))), data = jdta, start = eval(parse(text = paste(v$start))),
                      control = nls.lm.control(maxiter = 1000, maxfev = 1000, factor = 0.01,
-                     ftol = sqrt(.Machine$double.eps),ptol = sqrt(.Machine$double.eps)),
+                                              ftol = sqrt(.Machine$double.eps),ptol = sqrt(.Machine$double.eps)),
                      lower = eval(parse(text = paste(v$lb))),upper = eval(parse(text = paste(v$ub))))
     }, silent = TRUE)
     
@@ -208,7 +208,7 @@ gdrate <- function(input, pval, plots) {
     # observed values
     graphics::points(f ~ time, data = jdta, pch = 21, col = c("black"), bg = "red", lwd = 1.2,
                      cex = 1.5)
-     return(rmse)
+    return(rmse)
   }
   
   # Function to compare models and return selected fit with estimates or not fit
@@ -304,12 +304,13 @@ gdrate <- function(input, pval, plots) {
       }
       
       fmd <- do.call("rbind", sapply(1:nm, fmod, simplify = FALSE))
-      
+      #print(fmd)
       # selected or not fit
       sigm <- unique(fmd[fmd$sigp == fmd$np & fmd$isconv == "TRUE", 1:10])
+      #print(sigm)
       dsigm <- dim(sigm)[1]
       keepcols <- c("name00", "lm", "Analyzed", "Group", "selected", "iMod",
-                    "modelnames", "parameter", "Estimate", "Std..Error", "t.value","Pr...t..")
+                    "modelnames", "parameter", "Estimate", "Std..Error", "t.value","Pr...t..", "AIC")
       
       if (dsigm > 0) {
         fmd1 <- sigm[(sigm$AIC == min(sigm$AIC)), ]
@@ -318,20 +319,24 @@ gdrate <- function(input, pval, plots) {
         if (plots==TRUE) { plotgdX(input1a, plotiMod) }
         fmd$selected <- selected
         fmd$Analyzed <- "yes"
+        fmd$AIC <- sigm$AIC
         fmd$Group <- "included"
         fmd3 <- fmd[, c(keepcols)]
         fmd3$IDr <- k
         input1a$ploti <- as.numeric(paste(unique(fmd1$iMod)))
         fmd3
+        #print(fmd3)
       } else {
         fmd$selected <- "not fit"
         fmd$Analyzed <- "yes"
         fmd$Group <- "excluded"
+        fmd$AIC <- "NA"
         fmd3 <- fmd[, c(keepcols)]
         fmd3$IDr <- k
         fmd3
       }
       colnames(fmd3)[1:2] <- c("name", "Nobs")
+      #print(fmd3)
       return(fmd3)
     }
     
@@ -347,15 +352,16 @@ gdrate <- function(input, pval, plots) {
       b <- cbind(name, ID4)
       c <- merge(a, b, by = "name")
       conout <- do.call("rbind", sapply(1:ln, fid4, simplify = FALSE))
+      print(conout)
     } else {
       zaout <- xfit(fit = "NA", name00 = "name00")
       conout <- zaout
     }
     
     allconv <- conout
-    pEst <- conout[, c(1, 4, 5, 7:12, 2, 13)]
+    pEst <- conout[, c(1, 4, 5, 7:12, 2, 14,13)]
     colnames(pEst) <- c("name", "type", "selected", "fit", "parameter", "Estimate",
-                        "StdError", "t.value", "p.value", "N", "IDr")
+                        "StdError", "t.value", "p.value", "N", "IDr","AIC")
     return(pEst)
   }
   
