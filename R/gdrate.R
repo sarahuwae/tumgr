@@ -359,10 +359,9 @@ gdrate <- function(input, pval, plots) {
     }
     
     allconv <- conout
-    pEst <- conout[, c(1, 4, 5, 7:12, 2, 14,13)]
+    pEst <- conout[, c(1, 4, 5, 7:12, 2, 14,15)]
     colnames(pEst) <- c("name", "type", "selected", "fit", "parameter", "Estimate",
                         "StdError", "t.value", "p.value", "N", "IDr","AIC")
-    print("SARA")
     return(pEst)
   }
   
