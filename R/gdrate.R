@@ -362,6 +362,7 @@ gdrate <- function(input, pval, plots) {
     pEst <- conout[, c(1, 4, 5, 7:12, 2, 14,13)]
     colnames(pEst) <- c("name", "type", "selected", "fit", "parameter", "Estimate",
                         "StdError", "t.value", "p.value", "N", "IDr","AIC")
+    print("SARA")
     return(pEst)
   }
   
