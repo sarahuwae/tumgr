@@ -319,7 +319,7 @@ gdrate <- function(input, pval, plots) {
         if (plots==TRUE) { plotgdX(input1a, plotiMod) }
         fmd$selected <- selected
         fmd$Analyzed <- "yes"
-        fmd$AIC <- sigm$AIC
+        fmd$AIC <- fmd$AIC
         fmd$Group <- "included"
         fmd3 <- fmd[, c(keepcols)]
         fmd3$IDr <- k
@@ -359,7 +359,7 @@ gdrate <- function(input, pval, plots) {
     }
     
     allconv <- conout
-    pEst <- conout[, c(1, 4, 5, 7:12, 2, 14,15)]
+    pEst <- conout[, c(1, 4, 5, 7:12, 2, 14,13)]
     colnames(pEst) <- c("name", "type", "selected", "fit", "parameter", "Estimate",
                         "StdError", "t.value", "p.value", "N", "IDr","AIC")
     return(pEst)
