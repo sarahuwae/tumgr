@@ -310,7 +310,7 @@ gdrate <- function(input, pval, plots) {
       #print(sigm)
       dsigm <- dim(sigm)[1]
       keepcols <- c("name00", "lm", "Analyzed", "Group", "selected", "iMod",
-                    "modelnames", "parameter", "Estimate", "Std..Error", "t.value","Pr...t..", "AIC")
+                    "modelnames", "parameter", "Estimate", "Std..Error", "t.value","Pr...t..", "AIC") #I added the AIC here
       
       if (dsigm > 0) {
         fmd1 <- sigm[(sigm$AIC == min(sigm$AIC)), ]
@@ -361,7 +361,7 @@ gdrate <- function(input, pval, plots) {
     allconv <- conout
     pEst <- conout[, c(1, 4, 5, 7:12, 2, 14,13)]
     colnames(pEst) <- c("name", "type", "selected", "fit", "parameter", "Estimate",
-                        "StdError", "t.value", "p.value", "N", "IDr","AIC")
+                        "StdError", "t.value", "p.value", "N", "IDr","AIC") #I added the AIC here 
     return(pEst)
   }
   
