@@ -352,7 +352,7 @@ gdrate <- function(input, pval, plots) {
       b <- cbind(name, ID4)
       c <- merge(a, b, by = "name")
       conout <- do.call("rbind", sapply(1:ln, fid4, simplify = FALSE))
-      print(conout)
+      #print(conout)
     } else {
       zaout <- xfit(fit = "NA", name00 = "name00")
       conout <- zaout
